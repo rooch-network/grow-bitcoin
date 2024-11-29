@@ -357,7 +357,9 @@ export default function ClientProjectsPage({
                     />
                   </Grid.Col>
                 ))
-              ) : <></>}
+              ) : (
+                <></>
+              )}
             </Grid>
           </Box>
         </Flex>
