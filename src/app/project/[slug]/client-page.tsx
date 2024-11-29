@@ -36,7 +36,7 @@ import { WalletConnectModal } from '@/components/connect-model'
 import { CreateSessionModal } from '@/components/session-model'
 import { formatBalance } from '@/utils/balance'
 import Markdown from 'react-markdown'
-import toast from "react-hot-toast";
+import toast from 'react-hot-toast'
 
 export default function ProjectDetail({ project }: { project: ProjectDetail }) {
   const [showConnectModel, setShowConnectModel] = useState(false)
