@@ -8,6 +8,7 @@ import '@fontsource/ibm-plex-sans/500.css'
 import '@fontsource/ibm-plex-sans/600.css'
 import '@mantine/core/styles.css'
 import './layout.css'
+import { Toaster } from 'react-hot-toast'
 
 type Props = {
   children: React.ReactNode

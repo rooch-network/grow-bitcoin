@@ -8,6 +8,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { RoochProvider, WalletProvider } from '@roochnetwork/rooch-sdk-kit'
 import { networkConfig } from './networks'
 import { isMainNetwork } from '@/utils/env'
+import { Toaster } from 'react-hot-toast'
 
 // const queryClient = new QueryClient();
 
@@ -18,7 +19,10 @@ export default function RoochDappProvider({ children }: { children: ReactNode })
     <QueryClientProvider client={queryClient}>
       <RoochProvider networks={networkConfig} defaultNetwork={network}>
         <WalletProvider chain="bitcoin" autoConnect>
-          {children}
+          <>
+            {children}
+            <Toaster position={'bottom-left'} />
+          </>
         </WalletProvider>
       </RoochProvider>
     </QueryClientProvider>

@@ -35,7 +35,8 @@
     "remark-rehype": "^11.1.1",
     "sass": "^1.80.7",
     "unified": "^11.0.5",
-    "react-markdown": "9.0.1"
+    "react-markdown": "9.0.1",
+    "react-hot-toast": "2.4.0"
   },
   "devDependencies": {
     "@svgr/webpack": "^8.1.0",

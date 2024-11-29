@@ -12,6 +12,7 @@ import { useNetworkVariable } from '@/app/networks'
 import { Args, Transaction } from '@roochnetwork/rooch-sdk'
 import { CreateSessionModal } from './session-model'
 import { formatBalance } from '@/utils/balance'
+import toast from 'react-hot-toast'
 const moduleName = 'grow_bitcoin'
 export type AssetsType = {
   id: string
@@ -64,7 +65,6 @@ export const StakeCard: React.FC<StakeCardProps> = ({ target, assets }) => {
         args: [Args.objectId(selectUTXO)],
       })
       .then((result) => {
-        console.log('check_asset_is_staked', result)
         if (result.vm_status !== 'Executed') {
           return
         }
@@ -84,8 +84,9 @@ export const StakeCard: React.FC<StakeCardProps> = ({ target, assets }) => {
       })
   }, [client, contractAddr, selectUTXO, actionLoading])
 
-  const handleAction = async () => {
-    if (!selectUTXO || action === 'Not Found') {
+  const handleAction = async (utxo?: string) => {
+    const curUTXO = selectUTXO || utxo
+    if (!curUTXO || action === 'Not Found') {
       return
     }
     if (!session) {
@@ -103,7 +104,7 @@ export const StakeCard: React.FC<StakeCardProps> = ({ target, assets }) => {
         tx = new Transaction()
         tx.callFunction({
           target: `${func}::harvest${tag}`,
-          args: [Args.objectId(selectUTXO)],
+          args: [Args.objectId(curUTXO)],
         })
 
         break
@@ -111,7 +112,7 @@ export const StakeCard: React.FC<StakeCardProps> = ({ target, assets }) => {
         tx = new Transaction()
         tx.callFunction({
           target: `${func}::stake${tag}`,
-          args: [Args.objectId(selectUTXO)],
+          args: [Args.objectId(curUTXO)],
         })
 
         break
@@ -119,7 +120,7 @@ export const StakeCard: React.FC<StakeCardProps> = ({ target, assets }) => {
         tx = new Transaction()
         tx.callFunction({
           target: `${func}::unstake${tag}`,
-          args: [Args.objectId(selectUTXO)],
+          args: [Args.objectId(curUTXO)],
         })
     }
 
@@ -127,6 +128,7 @@ export const StakeCard: React.FC<StakeCardProps> = ({ target, assets }) => {
       await signAndExecuteTransaction({
         transaction: tx,
       })
+      toast.success(`${action} success`)
     } catch (e: any) {
       if (e.code === 1002) {
         setShowSessionModel(true)
@@ -150,6 +152,45 @@ export const StakeCard: React.FC<StakeCardProps> = ({ target, assets }) => {
     )
     setSelectUTXO(id!.id)
   }
+
+  // const handleAllAction = async (action: 'stake' | 'unstake' | 'claim') => {
+  //   if (!session) {
+  //     setShowSessionModel(true)
+  //     return
+  //   }
+  //
+  //   for (const item of assets) {
+  //     const result = await client.executeViewFunction({
+  //       target: `${contractAddr}::${moduleName}::check_asset_is_staked`,
+  //       args: [Args.objectId(item.id)],
+  //     })
+  //
+  //     if (result.vm_status !== 'Executed') {
+  //       continue
+  //     }
+  //     const stakeInfo = {
+  //       staked: result.return_values![0].decoded_value as boolean,
+  //       harvest: Number(result.return_values![1].decoded_value),
+  //     }
+  //     switch (action) {
+  //       case 'stake':
+  //         if (!stakeInfo.staked) {
+  //           handleAllAction('stake')
+  //         }
+  //         break
+  //       case 'unstake':
+  //         if (stakeInfo.staked) {
+  //           handleAllAction('unstake')
+  //         }
+  //         break
+  //       case 'claim':
+  //         if (stakeInfo.staked && stakeInfo.harvest > 1) {
+  //           handleAllAction('claim')
+  //         }
+  //         break
+  //     }
+  //   }
+  // }
 
   return (
     <Card flex={{ base: 'auto', sm: 3 }} withBorder bg="gray.0" radius="lg" p="lg">
@@ -182,7 +223,7 @@ export const StakeCard: React.FC<StakeCardProps> = ({ target, assets }) => {
         size="md"
         radius="md"
         mt="md"
-        onClick={handleAction}
+        onClick={() => handleAction()}
         loading={(action !== 'Not Found' && stakeInfo === undefined) || actionLoading}
       >
         {action === 'Not Found'
@@ -191,6 +232,38 @@ export const StakeCard: React.FC<StakeCardProps> = ({ target, assets }) => {
             : 'Not Found UTXO'
           : action}
       </Button>
+      {/*{assets.length > 1 ? (*/}
+      {/*  <Flex justify="space-evenly" mt="md" style={{ width: '100%' }}>*/}
+      {/*    <Button*/}
+      {/*      size="md"*/}
+      {/*      radius="md"*/}
+      {/*      style={{ flexGrow: 1 }}*/}
+      {/*      onClick={() => handleAllAction('stake')}*/}
+      {/*    >*/}
+      {/*      stake all*/}
+      {/*    </Button>*/}
+      {/*    <Button*/}
+      {/*      size="md"*/}
+      {/*      radius="md"*/}
+      {/*      ml="md"*/}
+      {/*      mr="md"*/}
+      {/*      style={{ flexGrow: 1 }}*/}
+      {/*      onClick={() => handleAllAction('unstake')}*/}
+      {/*    >*/}
+      {/*      unstake all*/}
+      {/*    </Button>*/}
+      {/*    <Button*/}
+      {/*      size="md"*/}
+      {/*      radius="md"*/}
+      {/*      style={{ flexGrow: 1 }}*/}
+      {/*      onClick={() => handleAllAction('claim')}*/}
+      {/*    >*/}
+      {/*      claim all*/}
+      {/*    </Button>*/}
+      {/*  </Flex>*/}
+      {/*) : (*/}
+      {/*  <></>*/}
+      {/*)}*/}
     </Card>
   )
 }
