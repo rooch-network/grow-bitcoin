@@ -156,44 +156,60 @@ export const StakeCard: React.FC<StakeCardProps> = ({ target, assets }) => {
     setSelectUTXO(id!.id)
   }
 
-  // const handleAllAction = async (action: 'stake' | 'unstake' | 'claim') => {
-  //   if (!session) {
-  //     setShowSessionModel(true)
-  //     return
-  //   }
-  //
-  //   for (const item of assets) {
-  //     const result = await client.executeViewFunction({
-  //       target: `${contractAddr}::${moduleName}::check_asset_is_staked`,
-  //       args: [Args.objectId(item.id)],
-  //     })
-  //
-  //     if (result.vm_status !== 'Executed') {
-  //       continue
-  //     }
-  //     const stakeInfo = {
-  //       staked: result.return_values![0].decoded_value as boolean,
-  //       harvest: Number(result.return_values![1].decoded_value),
-  //     }
-  //     switch (action) {
-  //       case 'stake':
-  //         if (!stakeInfo.staked) {
-  //           handleAllAction('stake')
-  //         }
-  //         break
-  //       case 'unstake':
-  //         if (stakeInfo.staked) {
-  //           handleAllAction('unstake')
-  //         }
-  //         break
-  //       case 'claim':
-  //         if (stakeInfo.staked && stakeInfo.harvest > 1) {
-  //           handleAllAction('claim')
-  //         }
-  //         break
-  //     }
-  //   }
-  // }
+  const handleAllAction = async (action: 'stake' | 'unStake' | 'claim') => {
+    if (!session) {
+      setShowSessionModel(true)
+      return
+    }
+
+    const utxoIds = assets.map((item) => item.id)
+
+    const tag = target === 'bbn' ? '_bbn' : ''
+
+    setActionLoading(true)
+    const func = `${contractAddr}::${moduleName}`
+    let tx: Transaction
+    switch (action) {
+      case 'claim':
+        tx = new Transaction()
+        tx.callFunction({
+          target: `${func}::batch_harvest${tag}`,
+          args: [Args.vec('objectId', utxoIds)],
+        })
+
+        break
+      case 'stake':
+        tx = new Transaction()
+        tx.callFunction({
+          target: `${func}::batch_stake${tag}`,
+          args: [Args.vec('objectId', utxoIds)],
+        })
+
+        break
+      case 'unStake':
+        tx = new Transaction()
+        tx.callFunction({
+          target: `${func}::batch_unstake${tag}`,
+          args: [Args.vec('objectId', utxoIds)],
+        })
+    }
+
+    try {
+      const result = await signAndExecuteTransaction({
+        transaction: tx,
+      })
+
+      if (result.execution_info.status.type === 'executed') {
+        toast.success(`${action} success`)
+      }
+    } catch (e: any) {
+      if (e.code === 1002) {
+        setShowSessionModel(true)
+      }
+    } finally {
+      setActionLoading(false)
+    }
+  }
 
   return (
     <Card flex={{ base: 'auto', sm: 3 }} withBorder bg="gray.0" radius="lg" p="lg">
@@ -235,38 +251,38 @@ export const StakeCard: React.FC<StakeCardProps> = ({ target, assets }) => {
             : 'Not Found UTXO'
           : action}
       </Button>
-      {/*{assets.length > 1 ? (*/}
-      {/*  <Flex justify="space-evenly" mt="md" style={{ width: '100%' }}>*/}
-      {/*    <Button*/}
-      {/*      size="md"*/}
-      {/*      radius="md"*/}
-      {/*      style={{ flexGrow: 1 }}*/}
-      {/*      onClick={() => handleAllAction('stake')}*/}
-      {/*    >*/}
-      {/*      stake all*/}
-      {/*    </Button>*/}
-      {/*    <Button*/}
-      {/*      size="md"*/}
-      {/*      radius="md"*/}
-      {/*      ml="md"*/}
-      {/*      mr="md"*/}
-      {/*      style={{ flexGrow: 1 }}*/}
-      {/*      onClick={() => handleAllAction('unstake')}*/}
-      {/*    >*/}
-      {/*      unstake all*/}
-      {/*    </Button>*/}
-      {/*    <Button*/}
-      {/*      size="md"*/}
-      {/*      radius="md"*/}
-      {/*      style={{ flexGrow: 1 }}*/}
-      {/*      onClick={() => handleAllAction('claim')}*/}
-      {/*    >*/}
-      {/*      claim all*/}
-      {/*    </Button>*/}
-      {/*  </Flex>*/}
-      {/*) : (*/}
-      {/*  <></>*/}
-      {/*)}*/}
+      {assets.length > 1 ? (
+        <Flex justify="space-evenly" mt="md" style={{ width: '100%' }}>
+          <Button
+            size="md"
+            radius="md"
+            style={{ flexGrow: 1 }}
+            onClick={() => handleAllAction('stake')}
+          >
+            stake all
+          </Button>
+          <Button
+            size="md"
+            radius="md"
+            ml="md"
+            mr="md"
+            style={{ flexGrow: 1 }}
+            onClick={() => handleAllAction('unStake')}
+          >
+            unStake all
+          </Button>
+          <Button
+            size="md"
+            radius="md"
+            style={{ flexGrow: 1 }}
+            onClick={() => handleAllAction('claim')}
+          >
+            claim all
+          </Button>
+        </Flex>
+      ) : (
+        <></>
+      )}
     </Card>
   )
 }
