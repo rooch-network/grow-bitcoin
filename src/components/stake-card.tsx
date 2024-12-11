@@ -163,6 +163,10 @@ export const StakeCard: React.FC<StakeCardProps> = ({ target, assets }) => {
     }
 
     const utxoIds = assets.map((item) => item.id)
+    if (!utxoIds) {
+      toast.error('Not found utxo')
+      return
+    }
 
     const tag = target === 'bbn' ? '_bbn' : ''
 
