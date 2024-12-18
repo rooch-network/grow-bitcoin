@@ -292,7 +292,7 @@ export default function ClientProjectsPage({
     [selectedTags, tags],
   )
 
-  const [countdown, formattedRes] = useCountDown({
+  const [_countdown, formattedRes] = useCountDown({
     targetDate: 1735226095000,
   })
 
