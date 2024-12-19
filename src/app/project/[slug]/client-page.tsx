@@ -33,15 +33,11 @@ import { AnnotatedMoveStructView } from '@roochnetwork/rooch-sdk/src/client/type
 import { useEffect, useState } from 'react'
 import { getTokenInfo } from '@/app/stake/util'
 import { useNetworkVariable } from '@/app/networks'
-import { WalletConnectModal } from '@/components/connect-model'
-import { CreateSessionModal } from '@/components/session-model'
 import { formatNumber } from '@/utils/number'
 import Markdown from 'react-markdown'
 import toast from 'react-hot-toast'
 
 export default function ProjectDetail({ project }: { project: ProjectDetail }) {
-  const [showConnectModel, setShowConnectModel] = useState(false)
-  const [showCreateSessionModel, setShowCreateSessionModel] = useState(false)
   const session = useCurrentSession()
   const contractAddr = useNetworkVariable('contractAddr')
   const contractVersion = useNetworkVariable('contractVersion')
@@ -81,14 +77,6 @@ export default function ProjectDetail({ project }: { project: ProjectDetail }) {
   }, [data, client, contractAddr, addr])
 
   const handleVote = async (especial?: number) => {
-    if (addr === null) {
-      setShowConnectModel(true)
-      return
-    }
-    if (session === null) {
-      setShowCreateSessionModel(true)
-      return
-    }
     setLoading(true)
     const tx = new Transaction()
     tx.callFunction({
@@ -98,7 +86,7 @@ export default function ProjectDetail({ project }: { project: ProjectDetail }) {
     try {
       const reuslt = await client.signAndExecuteTransaction({
         transaction: tx,
-        signer: session,
+        signer: session!,
       })
 
       if (reuslt.execution_info.status.type === 'executed') {
@@ -106,9 +94,7 @@ export default function ProjectDetail({ project }: { project: ProjectDetail }) {
         await refetch()
       }
     } catch (e: any) {
-      if (e.code === 1002) {
-        setShowCreateSessionModel(true)
-      }
+      console.log(e)
     } finally {
       setLoading(false)
     }
@@ -117,11 +103,6 @@ export default function ProjectDetail({ project }: { project: ProjectDetail }) {
   return (
     <>
       <NavigationBar />
-      <WalletConnectModal isOpen={showConnectModel} onClose={() => setShowConnectModel(false)} />
-      <CreateSessionModal
-        isOpen={showCreateSessionModel}
-        onClose={() => setShowCreateSessionModel(false)}
-      />
       <Container size="sm" py="xl">
         <Anchor component={Link} href="/projects" mb="md">
           <IconChevronLeft />

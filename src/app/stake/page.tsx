@@ -14,7 +14,6 @@ import { getTokenInfo, TokenInfo } from './util'
 import { useCurrentAddress, useRoochClient } from '@roochnetwork/rooch-sdk-kit'
 import { useEffect, useState } from 'react'
 import { useNetworkVariable } from '../networks'
-import { WalletConnectModal } from '@/components/connect-model'
 import { formatNumber } from '@/utils/number'
 
 const stakingList = [
