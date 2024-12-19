@@ -169,7 +169,6 @@ export const StakeCard: React.FC<StakeCardProps> = ({ target, assets }) => {
     }
 
     const tag = target === 'bbn' ? '_bbn' : ''
-    const maxGas = utxoIds.length * 0.023 * 100000000 // len * 0.023 * 1RGas
 
     setActionLoading(true)
     const func = `${contractAddr}::${moduleName}`
@@ -180,7 +179,6 @@ export const StakeCard: React.FC<StakeCardProps> = ({ target, assets }) => {
         tx.callFunction({
           target: `${func}::batch_harvest${tag}`,
           args: [Args.vec('objectId', utxoIds)],
-          maxGas,
         })
 
         break
@@ -189,7 +187,6 @@ export const StakeCard: React.FC<StakeCardProps> = ({ target, assets }) => {
         tx.callFunction({
           target: `${func}::batch_stake${tag}`,
           args: [Args.vec('objectId', utxoIds)],
-          maxGas,
         })
 
         break
@@ -198,9 +195,9 @@ export const StakeCard: React.FC<StakeCardProps> = ({ target, assets }) => {
         tx.callFunction({
           target: `${func}::batch_unstake${tag}`,
           args: [Args.vec('objectId', utxoIds)],
-          maxGas,
         })
     }
+    tx.setMaxGas(utxoIds.length * 0.023 * 100000000) // len * 0.023 * 1RGas
 
     try {
       const result = await signAndExecuteTransaction({
