@@ -9,13 +9,11 @@ import { useDisclosure, useMediaQuery } from '@mantine/hooks'
 import LogoSVG from '@/assets/logo.svg'
 
 import { IconMenu2 } from '@tabler/icons-react'
-import { useCurrentAddress } from '@roochnetwork/rooch-sdk-kit'
-import { shortAddress } from '@/utils/address'
+import { ConnectButton } from '@roochnetwork/rooch-sdk-kit'
 import { WalletConnectModal } from './connect-model'
 import { useState } from 'react'
 
 function DesktopNavigationBar({ style }: { style?: any }) {
-  const currentAddress = useCurrentAddress()
   const pathname = usePathname()
 
   const [showConnectModel, setShowConnectModel] = useState(false)
@@ -82,15 +80,7 @@ function DesktopNavigationBar({ style }: { style?: any }) {
           >
             Submit Project
           </Anchor>
-          <Button
-            radius="md"
-            ml="auto"
-            onClick={() => {
-              setShowConnectModel(currentAddress === undefined)
-            }}
-          >
-            {currentAddress ? shortAddress(currentAddress.toStr()) : 'Connect Wallet'}
-          </Button>
+          <ConnectButton />
         </Flex>
       </Container>
     </Box>
@@ -101,12 +91,8 @@ function MobileNavigationBar({ style }: { style?: any }) {
   const [opened, { open, close }] = useDisclosure(false)
   const pathname = usePathname()
 
-  const currentAddress = useCurrentAddress()
-  const [showConnectModel, setShowConnectModel] = useState(false)
-
   return (
     <Box style={style}>
-      <WalletConnectModal isOpen={showConnectModel} onClose={() => setShowConnectModel(false)} />
       <Container size="lg">
         <Flex py="md" align="center" gap="lg">
           <Link href="/">
@@ -120,15 +106,6 @@ function MobileNavigationBar({ style }: { style?: any }) {
           >
             <IconMenu2 />
           </UnstyledButton>
-
-          <Button
-            radius="md"
-            onClick={() => {
-              setShowConnectModel(currentAddress === undefined)
-            }}
-          >
-            {currentAddress ? shortAddress(currentAddress.toStr()) : 'Connect Wallet'}
-          </Button>
         </Flex>
       </Container>
 

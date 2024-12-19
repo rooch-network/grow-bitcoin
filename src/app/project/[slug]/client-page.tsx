@@ -22,6 +22,7 @@ import Footer from '@/components/Footer'
 
 import { IconChevronLeft, IconThumbUp, IconExternalLink } from '@tabler/icons-react'
 import {
+  SessionKeyGuard,
   useCurrentAddress,
   useCurrentSession,
   useRoochClient,
@@ -79,7 +80,7 @@ export default function ProjectDetail({ project }: { project: ProjectDetail }) {
     })
   }, [data, client, contractAddr, addr])
 
-  const handleVote = async () => {
+  const handleVote = async (especial?: number) => {
     if (addr === null) {
       setShowConnectModel(true)
       return
@@ -92,7 +93,7 @@ export default function ProjectDetail({ project }: { project: ProjectDetail }) {
     const tx = new Transaction()
     tx.callFunction({
       target: `${moduleName}::vote_entry`,
-      args: [projectListObj, Args.string(project.slug), Args.u256(BigInt(amount))],
+      args: [projectListObj, Args.string(project.slug), Args.u256(BigInt(especial || amount))],
     })
     try {
       const reuslt = await client.signAndExecuteTransaction({
@@ -184,18 +185,19 @@ export default function ProjectDetail({ project }: { project: ProjectDetail }) {
                 mt="xl"
                 direction={{ base: 'column', xs: 'row' }}
               >
-                <Button
-                  variant="outline"
-                  leftSection={<IconThumbUp size="1.5em" />}
-                  radius="xl"
-                  disabled={true}
+                <SessionKeyGuard
+                  onClick={() => {
+                    handleVote(1)
+                  }}
                 >
-                  {formatNumber(
-                    (data!.return_values![0].decoded_value as AnnotatedMoveStructView).value[
-                      'vote_value'
-                    ] as number,
-                  )}
-                </Button>
+                  <Button variant="outline" leftSection={<IconThumbUp size="1.5em" />} radius="xl">
+                    {formatNumber(
+                      (data!.return_values![0].decoded_value as AnnotatedMoveStructView).value[
+                        'vote_value'
+                      ] as number,
+                    )}
+                  </Button>
+                </SessionKeyGuard>
                 <Group gap="0">
                   <Input
                     flex={1}
@@ -215,15 +217,16 @@ export default function ProjectDetail({ project }: { project: ProjectDetail }) {
                       },
                     }}
                   />
-                  <Button
-                    radius="md"
-                    disabled={!addr || balance === 0}
-                    loading={loading}
-                    style={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}
-                    onClick={handleVote}
-                  >
-                    Vote
-                  </Button>
+                  <SessionKeyGuard onClick={() => handleVote()}>
+                    <Button
+                      radius="md"
+                      disabled={!addr || balance === 0}
+                      loading={loading}
+                      style={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}
+                    >
+                      Vote
+                    </Button>
+                  </SessionKeyGuard>
                 </Group>
               </Flex>
               <Flex ta="right" gap="xs" justify="flex-end" mt="6" c="gray.7">
