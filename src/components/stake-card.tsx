@@ -197,6 +197,7 @@ export const StakeCard: React.FC<StakeCardProps> = ({ target, assets }) => {
           args: [Args.vec('objectId', utxoIds)],
         })
     }
+    tx.setMaxGas(utxoIds.length * 0.023 * 100000000) // len * 0.023 * 1RGas
 
     try {
       const result = await signAndExecuteTransaction({
