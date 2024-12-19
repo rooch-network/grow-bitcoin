@@ -10,14 +10,21 @@ import { networkConfig } from './networks'
 import { isMainNetwork } from '@/utils/env'
 import { Toaster } from 'react-hot-toast'
 
-// const queryClient = new QueryClient();
-
 export default function RoochDappProvider({ children }: { children: ReactNode }) {
   const [queryClient] = useState(() => new QueryClient())
   const network = isMainNetwork() ? 'mainnet' : 'testnet'
   return (
     <QueryClientProvider client={queryClient}>
-      <RoochProvider networks={networkConfig} defaultNetwork={network}>
+      <RoochProvider
+        networks={networkConfig}
+        sessionConf={{
+          appName: 'Rooch GROW',
+          appUrl: 'https://test-grow.rooch.network',
+          scopes: [`0x701c21bf1c8cd5af8c42983890d8ca55e7a820171b8e744c13f2d9998bf76cc3::*::*`],
+          maxInactiveInterval: 86400, // 1 day
+        }}
+        defaultNetwork={network}
+      >
         <WalletProvider chain="bitcoin" autoConnect>
           <>
             {children}

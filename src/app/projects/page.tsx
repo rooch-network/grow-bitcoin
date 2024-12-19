@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import ClientProjectsPage from './client-page'
 
-import { getXAvatar } from '@/utils/x'
+import { getAvatar } from '@/utils/x'
 
 export default async function Projects() {
   const projectsResponse = await fetch(
@@ -27,7 +27,7 @@ export default async function Projects() {
           id: c.id,
           slug: fields.Slug,
           name: fields.Name,
-          avatar: getXAvatar(fields.Twitter),
+          avatar: getAvatar(fields),
           thumbnail: fields.Logo?.[0].thumbnails.large.url,
           oneLiner: fields['One-Liner'],
           tags: fields.Tags || [],

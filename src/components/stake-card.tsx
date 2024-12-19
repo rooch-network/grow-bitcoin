@@ -3,21 +3,22 @@
 import React, { useEffect, useState } from 'react'
 import { Card, Select, Button, Text, Flex } from '@mantine/core'
 import {
-  useCurrentSession,
+  SessionKeyGuard,
   useRoochClient,
-  UseSignAndExecuteTransaction,
+  useSignAndExecuteTransaction,
 } from '@roochnetwork/rooch-sdk-kit'
 import { shortAddress } from '@/utils/address'
 import { useNetworkVariable } from '@/app/networks'
 import { Args, Transaction } from '@roochnetwork/rooch-sdk'
-import { CreateSessionModal } from './session-model'
 import { formatNumber } from '@/utils/number'
 import toast from 'react-hot-toast'
+
 const moduleName = 'grow_bitcoin'
 export type AssetsType = {
   id: string
   value: string
 }
+
 interface StakeCardProps {
   target: 'bbn' | 'self'
   assets: AssetsType[]
@@ -30,8 +31,6 @@ type StakeInfo = {
 
 type Action = 'stake' | 'unStake' | 'claim' | 'Not Found'
 export const StakeCard: React.FC<StakeCardProps> = ({ target, assets }) => {
-  const session = useCurrentSession()
-  const [showSessionModel, setShowSessionModel] = useState(false)
   const contractAddr = useNetworkVariable('contractAddr')
   const [selectValue, setSelectValue] = useState<string>()
   const [selectUTXO, setSelectUTXO] = useState<string>()
@@ -39,7 +38,7 @@ export const StakeCard: React.FC<StakeCardProps> = ({ target, assets }) => {
   const [action, setAction] = useState<Action>('stake')
   const [actionLoading, setActionLoading] = useState(false)
   const client = useRoochClient()
-  const { mutateAsync: signAndExecuteTransaction } = UseSignAndExecuteTransaction()
+  const { mutateAsync: signAndExecuteTransaction } = useSignAndExecuteTransaction()
 
   useEffect(() => {
     if (assets && assets.length > 0) {
@@ -73,8 +72,7 @@ export const StakeCard: React.FC<StakeCardProps> = ({ target, assets }) => {
           harvest: Number(result.return_values![1].decoded_value),
         }
         setStakeInfo(stakeInfo)
-
-        if (stakeInfo.staked && stakeInfo.harvest > 1) {
+        if (stakeInfo.staked && stakeInfo.harvest > 0) {
           setAction('claim')
         } else if (stakeInfo.staked && stakeInfo.harvest === 0) {
           setAction('unStake')
@@ -87,10 +85,6 @@ export const StakeCard: React.FC<StakeCardProps> = ({ target, assets }) => {
   const handleAction = async (utxo?: string) => {
     const curUTXO = selectUTXO || utxo
     if (!curUTXO || action === 'Not Found') {
-      return
-    }
-    if (!session) {
-      setShowSessionModel(true)
       return
     }
 
@@ -123,7 +117,6 @@ export const StakeCard: React.FC<StakeCardProps> = ({ target, assets }) => {
           args: [Args.objectId(curUTXO)],
         })
     }
-
     try {
       const result = await signAndExecuteTransaction({
         transaction: tx,
@@ -133,9 +126,7 @@ export const StakeCard: React.FC<StakeCardProps> = ({ target, assets }) => {
         toast.success(`${action} success`)
       }
     } catch (e: any) {
-      if (e.code === 1002) {
-        setShowSessionModel(true)
-      }
+      console.log(e)
     } finally {
       setActionLoading(false)
     }
@@ -157,11 +148,6 @@ export const StakeCard: React.FC<StakeCardProps> = ({ target, assets }) => {
   }
 
   const handleAllAction = async (action: 'stake' | 'unStake' | 'claim') => {
-    if (!session) {
-      setShowSessionModel(true)
-      return
-    }
-
     const utxoIds = assets.map((item) => item.id)
     if (!utxoIds) {
       toast.error('Not found utxo')
@@ -197,6 +183,7 @@ export const StakeCard: React.FC<StakeCardProps> = ({ target, assets }) => {
           args: [Args.vec('objectId', utxoIds)],
         })
     }
+    tx.setMaxGas(10000000)
 
     try {
       const result = await signAndExecuteTransaction({
@@ -207,9 +194,7 @@ export const StakeCard: React.FC<StakeCardProps> = ({ target, assets }) => {
         toast.success(`${action} success`)
       }
     } catch (e: any) {
-      if (e.code === 1002) {
-        setShowSessionModel(true)
-      }
+      console.log(e)
     } finally {
       setActionLoading(false)
     }
@@ -217,7 +202,6 @@ export const StakeCard: React.FC<StakeCardProps> = ({ target, assets }) => {
 
   return (
     <Card flex={{ base: 'auto', sm: 3 }} withBorder bg="gray.0" radius="lg" p="lg">
-      <CreateSessionModal isOpen={showSessionModel} onClose={() => setShowSessionModel(false)} />
       <Text fw="500">{target === 'bbn' ? 'Select Babylon Stake Seal' : 'Select UTXO'}</Text>
       <Select
         size="md"
@@ -242,47 +226,37 @@ export const StakeCard: React.FC<StakeCardProps> = ({ target, assets }) => {
           )}
         </Flex>
       }
-      <Button
-        size="md"
-        radius="md"
-        mt="md"
-        onClick={() => handleAction()}
-        loading={(action !== 'Not Found' && stakeInfo === undefined) || actionLoading}
-      >
-        {action === 'Not Found'
-          ? target === 'bbn'
-            ? 'Not Found Babylon Stake Seal'
-            : 'Not Found UTXO'
-          : action}
-      </Button>
+      <SessionKeyGuard onClick={() => handleAction()}>
+        <Button
+          size="md"
+          radius="md"
+          mt="md"
+          loading={(action !== 'Not Found' && stakeInfo === undefined) || actionLoading}
+        >
+          {action === 'Not Found'
+            ? target === 'bbn'
+              ? 'Not Found Babylon Stake Seal'
+              : 'Not Found UTXO'
+            : action}
+        </Button>
+      </SessionKeyGuard>
       {assets.length > 1 ? (
         <Flex justify="space-evenly" mt="md" style={{ width: '100%' }}>
-          <Button
-            size="md"
-            radius="md"
-            style={{ flexGrow: 1 }}
-            onClick={() => handleAllAction('stake')}
-          >
-            stake all
-          </Button>
-          <Button
-            size="md"
-            radius="md"
-            ml="md"
-            mr="md"
-            style={{ flexGrow: 1 }}
-            onClick={() => handleAllAction('unStake')}
-          >
-            unStake all
-          </Button>
-          <Button
-            size="md"
-            radius="md"
-            style={{ flexGrow: 1 }}
-            onClick={() => handleAllAction('claim')}
-          >
-            claim all
-          </Button>
+          <SessionKeyGuard onClick={() => handleAllAction('stake')}>
+            <Button size="md" radius="md" style={{ flexGrow: 1 }}>
+              stake all
+            </Button>
+          </SessionKeyGuard>
+          <SessionKeyGuard onClick={() => handleAllAction('unStake')}>
+            <Button size="md" radius="md" ml="md" mr="md" style={{ flexGrow: 1 }}>
+              unStake all
+            </Button>
+          </SessionKeyGuard>
+          <SessionKeyGuard onClick={() => handleAllAction('claim')}>
+            <Button size="md" radius="md" style={{ flexGrow: 1 }}>
+              claim all
+            </Button>
+          </SessionKeyGuard>
         </Flex>
       ) : (
         <></>

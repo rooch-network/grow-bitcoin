@@ -26,6 +26,7 @@ import Footer from '@/components/Footer'
 
 import { IconSearch, IconThumbUp, IconChevronDown } from '@tabler/icons-react'
 import {
+  SessionKeyGuard,
   useCurrentAddress,
   useCurrentSession,
   useRoochClient,
@@ -46,6 +47,7 @@ function ProjectCard({
   contractProject?: ContractProjectType
   adminId: string
 }) {
+  console.log(project)
   const client = useRoochClient()
   const contractAddr = useNetworkVariable('contractAddr')
   const contractVersion = useNetworkVariable('contractVersion')
@@ -111,15 +113,11 @@ function ProjectCard({
             {formatNumber(contractProject.vote)}
           </Button>
         ) : adminId !== '' ? (
-          <Button
-            size="xs"
-            variant="outline"
-            radius="xl"
-            loading={loading}
-            onClick={handleNewProject}
-          >
-            New Project
-          </Button>
+          <SessionKeyGuard onClick={handleNewProject}>
+            <Button size="xs" variant="outline" radius="xl" loading={loading}>
+              New Project
+            </Button>
+          </SessionKeyGuard>
         ) : (
           <p />
         )}

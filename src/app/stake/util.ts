@@ -41,8 +41,6 @@ export async function getTokenInfo(client: RoochClient, address: string): Promis
     },
   })
 
-  console.log(result)
-
   const data = result[0]
   const decode = (((data.decoded_value as any).value as any).value as any).value as any
   const startTime = decode['start_time'] as number
