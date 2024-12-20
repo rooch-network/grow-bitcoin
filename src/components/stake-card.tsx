@@ -183,7 +183,7 @@ export const StakeCard: React.FC<StakeCardProps> = ({ target, assets }) => {
           args: [Args.vec('objectId', utxoIds)],
         })
     }
-    tx.setMaxGas(utxoIds.length * 0.023 * 100000000) // len * 0.023 * 1RGas
+    tx.setMaxGas(utxoIds.length * 0.03 * 100000000) // len * 0.03 * 1RGas
 
     try {
       const result = await signAndExecuteTransaction({
@@ -195,6 +195,7 @@ export const StakeCard: React.FC<StakeCardProps> = ({ target, assets }) => {
       }
     } catch (e: any) {
       console.log(e)
+      toast.error(`${action} failed`)
     } finally {
       setActionLoading(false)
     }
