@@ -22,6 +22,7 @@ import Footer from '@/components/Footer'
 
 import { IconChevronLeft, IconThumbUp, IconExternalLink } from '@tabler/icons-react'
 import {
+  SessionKeyGuard,
   useCurrentAddress,
   useCurrentSession,
   useRoochClient,
@@ -32,15 +33,11 @@ import { AnnotatedMoveStructView } from '@roochnetwork/rooch-sdk/src/client/type
 import { useEffect, useState } from 'react'
 import { getTokenInfo } from '@/app/stake/util'
 import { useNetworkVariable } from '@/app/networks'
-import { WalletConnectModal } from '@/components/connect-model'
-import { CreateSessionModal } from '@/components/session-model'
 import { formatNumber } from '@/utils/number'
 import Markdown from 'react-markdown'
 import toast from 'react-hot-toast'
 
 export default function ProjectDetail({ project }: { project: ProjectDetail }) {
-  const [showConnectModel, setShowConnectModel] = useState(false)
-  const [showCreateSessionModel, setShowCreateSessionModel] = useState(false)
   const session = useCurrentSession()
   const contractAddr = useNetworkVariable('contractAddr')
   const contractVersion = useNetworkVariable('contractVersion')
@@ -79,25 +76,17 @@ export default function ProjectDetail({ project }: { project: ProjectDetail }) {
     })
   }, [data, client, contractAddr, addr])
 
-  const handleVote = async () => {
-    if (addr === null) {
-      setShowConnectModel(true)
-      return
-    }
-    if (session === null) {
-      setShowCreateSessionModel(true)
-      return
-    }
+  const handleVote = async (especial?: number) => {
     setLoading(true)
     const tx = new Transaction()
     tx.callFunction({
       target: `${moduleName}::vote_entry`,
-      args: [projectListObj, Args.string(project.slug), Args.u256(BigInt(amount))],
+      args: [projectListObj, Args.string(project.slug), Args.u256(BigInt(especial || amount))],
     })
     try {
       const reuslt = await client.signAndExecuteTransaction({
         transaction: tx,
-        signer: session,
+        signer: session!,
       })
 
       if (reuslt.execution_info.status.type === 'executed') {
@@ -105,9 +94,7 @@ export default function ProjectDetail({ project }: { project: ProjectDetail }) {
         await refetch()
       }
     } catch (e: any) {
-      if (e.code === 1002) {
-        setShowCreateSessionModel(true)
-      }
+      console.log(e)
     } finally {
       setLoading(false)
     }
@@ -116,11 +103,6 @@ export default function ProjectDetail({ project }: { project: ProjectDetail }) {
   return (
     <>
       <NavigationBar />
-      <WalletConnectModal isOpen={showConnectModel} onClose={() => setShowConnectModel(false)} />
-      <CreateSessionModal
-        isOpen={showCreateSessionModel}
-        onClose={() => setShowCreateSessionModel(false)}
-      />
       <Container size="sm" py="xl">
         <Anchor component={Link} href="/projects" mb="md">
           <IconChevronLeft />
@@ -184,18 +166,19 @@ export default function ProjectDetail({ project }: { project: ProjectDetail }) {
                 mt="xl"
                 direction={{ base: 'column', xs: 'row' }}
               >
-                <Button
-                  variant="outline"
-                  leftSection={<IconThumbUp size="1.5em" />}
-                  radius="xl"
-                  disabled={true}
+                <SessionKeyGuard
+                  onClick={() => {
+                    handleVote(1)
+                  }}
                 >
-                  {formatNumber(
-                    (data!.return_values![0].decoded_value as AnnotatedMoveStructView).value[
-                      'vote_value'
-                    ] as number,
-                  )}
-                </Button>
+                  <Button variant="outline" leftSection={<IconThumbUp size="1.5em" />} radius="xl">
+                    {formatNumber(
+                      (data!.return_values![0].decoded_value as AnnotatedMoveStructView).value[
+                        'vote_value'
+                      ] as number,
+                    )}
+                  </Button>
+                </SessionKeyGuard>
                 <Group gap="0">
                   <Input
                     flex={1}
@@ -215,15 +198,16 @@ export default function ProjectDetail({ project }: { project: ProjectDetail }) {
                       },
                     }}
                   />
-                  <Button
-                    radius="md"
-                    disabled={!addr || balance === 0}
-                    loading={loading}
-                    style={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}
-                    onClick={handleVote}
-                  >
-                    Vote
-                  </Button>
+                  <SessionKeyGuard onClick={() => handleVote()}>
+                    <Button
+                      radius="md"
+                      disabled={!addr || balance === 0}
+                      loading={loading}
+                      style={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}
+                    >
+                      Vote
+                    </Button>
+                  </SessionKeyGuard>
                 </Group>
               </Flex>
               <Flex ta="right" gap="xs" justify="flex-end" mt="6" c="gray.7">
