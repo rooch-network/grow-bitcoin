@@ -40,3 +40,8 @@ interface ContractProjectType {
   isOpen: boolean
   vote: number
 }
+
+type VoterInfo = {
+  address: string
+  value: number
+}

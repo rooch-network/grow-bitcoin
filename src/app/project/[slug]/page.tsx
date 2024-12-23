@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { notFound } from 'next/navigation'
 import ClientProjectDetailPage from './client-page'
-import { getXAvatar } from '@/utils/x'
+import { getAvatar } from '@/utils/x'
 
 export default async function ProjectDetail({ params }: { params: { slug: string } }) {
   const { slug } = params
@@ -35,9 +35,11 @@ export default async function ProjectDetail({ params }: { params: { slug: string
     tags: fields.Tags,
     website: fields.Website,
     twitter: fields.Twitter,
-    avatar: getXAvatar(fields.Twitter),
+    avatar: getAvatar(fields),
     github: 'Github' in fields ? fields.Github : null,
   }
+  // airtable escape
+  project.description = project.description.replace(/\\([*_~`{}\[\]()#+\-.!])/g, '$1')
 
   return <ClientProjectDetailPage project={project} />
 }

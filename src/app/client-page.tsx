@@ -143,7 +143,7 @@ export default function Home({ faq }: { faq: FAQ[] }) {
                 size="md"
                 fullWidth={!mobileMatches}
               >
-                Get $GROW
+                Earn $GROW
               </Button>
               <Button
                 component={Link}

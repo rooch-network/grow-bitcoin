@@ -8,7 +8,10 @@ import '@fontsource/ibm-plex-sans/500.css'
 import '@fontsource/ibm-plex-sans/600.css'
 import '@mantine/core/styles.css'
 import './layout.css'
-
+import '@roochnetwork/rooch-sdk-kit/dist/index.css'
+import '@radix-ui/themes/styles.css'
+import { Theme } from '@radix-ui/themes'
+import { ErrorGuard } from './errorGraud'
 type Props = {
   children: React.ReactNode
 }
@@ -56,7 +59,12 @@ export default function RootLayout({ children }: Props) {
       </head>
       <body>
         <MantineProvider theme={theme}>
-          <RoochDappProvider>{children}</RoochDappProvider>
+          <Theme appearance="light">
+            <RoochDappProvider>
+              <ErrorGuard />
+              {children}
+            </RoochDappProvider>
+          </Theme>
         </MantineProvider>
       </body>
     </html>

@@ -14,7 +14,6 @@ import { getTokenInfo, TokenInfo } from './util'
 import { useCurrentAddress, useRoochClient } from '@roochnetwork/rooch-sdk-kit'
 import { useEffect, useState } from 'react'
 import { useNetworkVariable } from '../networks'
-import { WalletConnectModal } from '@/components/connect-model'
 import { formatNumber } from '@/utils/number'
 
 const stakingList = [
@@ -54,7 +53,6 @@ const stakingList = [
 export default function GrowPage() {
   const client = useRoochClient()
   const addr = useCurrentAddress()
-  const [showConnectModel, setShowConnectModel] = useState(false)
   const contractAddr = useNetworkVariable('contractAddr')
   const [tokenInfo, setTokenInfo] = useState<TokenInfo>()
   const [timeRemaining, setTimeRemaining] = useState(0)
@@ -106,7 +104,6 @@ export default function GrowPage() {
   return (
     <>
       <NavigationBar />
-      <WalletConnectModal isOpen={showConnectModel} onClose={() => setShowConnectModel(false)} />
       <Container pt="1rem" pb="4rem" size="lg">
         <Card radius="lg" p="lg" bg="gray.0" mb="2rem">
           <Flex justify="space-between">
@@ -172,19 +169,7 @@ export default function GrowPage() {
                         Coming Soon
                       </Button>
                     ) : (
-                      <Button
-                        component={Link}
-                        href={i.link.href}
-                        radius="md"
-                        w="148"
-                        onClick={(event) => {
-                          if (!addr) {
-                            event.preventDefault()
-                            setShowConnectModel(true)
-                            return
-                          }
-                        }}
-                      >
+                      <Button component={Link} href={i.link.href} radius="md" w="148">
                         {i.link.label}
                       </Button>
                     )}
