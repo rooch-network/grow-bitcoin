@@ -374,6 +374,8 @@ export default function ClientProjectsPage({
                       fontSize: '1rem',
                       marginTop: '4px',
                       fontWeight: 600,
+                      width: '100%',
+                      textWrap: 'wrap',
                     }}
                   >
                     Bringing BTC power to broader SocialFi ecosystem by voting for UXLink and get
