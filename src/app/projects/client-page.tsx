@@ -36,6 +36,7 @@ import { AnnotatedMoveStructView } from '@roochnetwork/rooch-sdk/src/client/type
 import { Args, Transaction } from '@roochnetwork/rooch-sdk'
 import { CreateSessionModal } from '@/components/session-model'
 import { formatNumber } from '@/utils/number'
+import router from 'next/router'
 
 function ProjectCard({
   project,
@@ -293,7 +294,7 @@ export default function ClientProjectsPage({
   )
 
   const [_countdown, formattedRes] = useCountDown({
-    targetDate: 1735226095000,
+    targetDate: 1736078400000,
   })
 
   const { days, hours, minutes, seconds } = formattedRes
@@ -334,9 +335,12 @@ export default function ClientProjectsPage({
               {mobileTocExpanded && FilterCheckboxGroup}
             </Box>
 
-            <Stack
+            <Button
+              component={Link}
+              href="/project/uxlink"
               style={{
                 width: '100%',
+                height: 'fit-content',
                 position: 'relative',
                 borderRadius: '12px',
                 background: 'url(./banner.svg)',
@@ -344,6 +348,7 @@ export default function ClientProjectsPage({
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat',
                 marginBottom: '16px',
+                textAlign: 'left',
               }}
             >
               <Stack
@@ -376,7 +381,7 @@ export default function ClientProjectsPage({
                   </Text>
                 </Stack>
                 <Stack style={{ width: '30%' }}>
-                  <Text style={{ color: '#fff', fontSize: '2.25rem', fontWeight: 600 }}>
+                  <Text style={{ color: '#fff', fontSize: '2.05rem', fontWeight: 600 }}>
                     {days}d {hours}h {minutes}m {seconds} s
                   </Text>
                 </Stack>
@@ -384,7 +389,7 @@ export default function ClientProjectsPage({
                   <Image src="./logo.svg" alt="logo" width={80} height={80} />
                 </Stack>
               </Stack>
-            </Stack>
+            </Button>
 
             <Flex gap="md" direction={{ base: 'column', xs: 'row' }}>
               <Input
