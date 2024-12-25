@@ -481,7 +481,7 @@ export default function ProjectDetail({ project }: { project: ProjectDetail }) {
                   boundaries={2}
                   value={page + 1}
                   onChange={(v) => {
-                      setPage(v - 1)
+                    setPage(v - 1)
                   }}
                   total={Math.ceil(voters.length / pageSize)}
                   style={{ marginRight: 8 }}
