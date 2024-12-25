@@ -19,6 +19,7 @@ import {
   Title,
   Tooltip,
   Pagination,
+  Select,
 } from '@mantine/core'
 import Link from 'next/link'
 import NavigationBar from '@/components/NavigationBar'
@@ -62,6 +63,7 @@ export default function ProjectDetail({ project }: { project: ProjectDetail }) {
   const [initVoteData, setInitVoteData] = useState(false)
   const [initVoteDataFinish, setInitVoteDataFinish] = useState(false)
   const [page, setPage] = useState(0)
+  const [pageSize, setPageSize] = useState(10)
   const [balance, setBalance] = useState(-1)
   const [amount, setAmount] = useState('1')
   const [voters, setVoters] = useState<Array<VoterInfo>>([])
@@ -212,8 +214,36 @@ export default function ProjectDetail({ project }: { project: ProjectDetail }) {
         value: Number(view.value),
       }
     })
+
     setVoters((prev: VoterInfo[]) => {
-      return prev.concat(items).sort((a, b) => b.value - a.value)
+      const seenAddresses = new Set<string>()
+      const uniqueVoters: VoterInfo[] = []
+
+      // First add all previous voters
+      prev.forEach((voter) => {
+        if (!seenAddresses.has(voter.address)) {
+          seenAddresses.add(voter.address)
+          uniqueVoters.push(voter)
+        }
+      })
+
+      // Then add new items if they haven't been seen
+      items.forEach((voter) => {
+        if (!seenAddresses.has(voter.address)) {
+          seenAddresses.add(voter.address)
+          uniqueVoters.push(voter)
+        }
+      })
+
+      // Stable sort that maintains relative order for equal values
+      return uniqueVoters.sort((a, b) => {
+        const diff = b.value - a.value
+        if (diff === 0) {
+          // If values are equal, maintain their original order
+          return uniqueVoters.indexOf(a) - uniqueVoters.indexOf(b)
+        }
+        return diff
+      })
     })
 
     if (result.has_next_page) {
@@ -410,14 +440,13 @@ export default function ProjectDetail({ project }: { project: ProjectDetail }) {
                   <Table.Th>Ranking</Table.Th>
                   <Table.Th>Address</Table.Th>
                   <Table.Th ta="right">Votes</Table.Th>
-                  {/* TODO: count the votes person num. */}
                 </Table.Tr>
               </Table.Thead>
               <Table.Tbody>
                 {initVoteDataFinish && voters.length ? (
-                  voters.slice(page * 10, (page + 1) * 10).map((voter, index) => (
+                  voters.slice(page * pageSize, (page + 1) * pageSize).map((voter, index) => (
                     <Table.Tr key={voter.address}>
-                      <Table.Td>{getRankEmoji(page * 10 + index)}</Table.Td>
+                      <Table.Td>{getRankEmoji(page * pageSize + index)}</Table.Td>
                       <Table.Td>
                         <Tooltip label={new RoochAddress(voter.address).toStr()} withArrow>
                           <span>
@@ -430,7 +459,9 @@ export default function ProjectDetail({ project }: { project: ProjectDetail }) {
                         </Tooltip>
                       </Table.Td>
                       <Table.Td ta="right">
-                        {Intl.NumberFormat('en-us').format(voter.value)}
+                        <Text style={{ fontVariantNumeric: 'tabular-nums' }}>
+                          {Intl.NumberFormat('en-us').format(voter.value)}
+                        </Text>
                       </Table.Td>
                     </Table.Tr>
                   ))
@@ -444,15 +475,31 @@ export default function ProjectDetail({ project }: { project: ProjectDetail }) {
               </Table.Tbody>
             </Table>
             <hr style={{ margin: '20px 0', border: '1px solid #e0e0e0' }} />
-            <Center>
+            <Box style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
               <Pagination
                 boundaries={3}
+                value={page + 1}
                 onChange={(v) => {
                   setPage(v - 1)
                 }}
-                total={Math.ceil(voters.length / 10)}
+                total={Math.ceil(voters.length / pageSize)}
+                style={{ marginRight: 8 }}
               />
-            </Center>
+              <Select
+                value={pageSize.toString()}
+                onChange={(value) => {
+                  setPageSize(Number(value))
+                  setPage(0)
+                }}
+                data={[
+                  { value: '10', label: '10 / page' },
+                  { value: '20', label: '20 / page' },
+                  { value: '50', label: '50 / page' },
+                  { value: '100', label: '100 / page' },
+                ]}
+                style={{ width: 120 }}
+              />
+            </Box>
           </Flex>
         </Card>
       </Container>
