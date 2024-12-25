@@ -475,16 +475,18 @@ export default function ProjectDetail({ project }: { project: ProjectDetail }) {
               </Table.Tbody>
             </Table>
             <hr style={{ margin: '20px 0', border: '1px solid #e0e0e0' }} />
-            <Box style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
-              <Pagination
-                boundaries={3}
-                value={page + 1}
-                onChange={(v) => {
-                  setPage(v - 1)
-                }}
-                total={Math.ceil(voters.length / pageSize)}
-                style={{ marginRight: 8 }}
-              />
+            <Box style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <Box style={{ display: 'flex', alignItems: 'center' }}>
+                <Pagination
+                  boundaries={2}
+                  value={page + 1}
+                  onChange={(v) => {
+                      setPage(v - 1)
+                  }}
+                  total={Math.ceil(voters.length / pageSize)}
+                  style={{ marginRight: 8 }}
+                />
+              </Box>
               <Select
                 value={pageSize.toString()}
                 onChange={(value) => {
