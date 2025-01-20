@@ -17,8 +17,8 @@ const ActivitiesData = [
     icon: './yescoin_logo.svg',
   },
   {
-    name: 'Group',
-    title: 'Group Special Campaign ends in',
+    name: 'WORLD3',
+    title: 'WORLD3 Special Campaign ends in',
     description:
       'Bring the power of BTC to virtual worlds and the AI ecosystem by voting for WORLD3 and earning Lumens.',
     endTime: 1740038400000,
@@ -102,14 +102,14 @@ export const Activities = () => {
     <div
       style={{
         borderRadius: '12px',
-        backgroundImage: 'url(./banner.svg)', // 使用背景图片
+        backgroundImage: 'url(./banner.svg)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
         marginBottom: '16px',
         textAlign: 'left',
-        overflow: 'hidden', // 确保圆角边界效果
-        position: 'relative', // 设置容器的定位上下文
+        overflow: 'hidden',
+        position: 'relative',
       }}
     >
       <Carousel
