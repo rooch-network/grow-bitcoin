@@ -13,7 +13,7 @@ const ActivitiesData = [
     title: 'Yescoin Special Campaign ends in',
     description:
       'Bringing BTC power to broader SocialFi ecosystem by voting for Yescoin and get Yescoin XP.',
-    endTime: 1737979200000,
+    endTime: 1739347200000,
     icon: './yescoin_logo.svg',
   },
   {
