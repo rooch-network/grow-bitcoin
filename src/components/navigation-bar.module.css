@@ -27,7 +27,7 @@
   text-transform: uppercase;
   font-size: var(--mantine-font-size-xs);
   color: light-dark(var(--mantine-color-gray-6), var(--mantine-color-dark-1));
-  padding: 7px var(--mantine-spacing-sm);
+  padding: 8px var(--mantine-spacing-sm);
   font-weight: 700;
   border-bottom: 2px solid transparent;
   transition:
@@ -49,6 +49,7 @@
   color: light-dark(var(--mantine-color-gray-6), var(--mantine-color-dark-1));
   font-size: var(--mantine-font-size-xs);
   text-transform: uppercase;
+  padding-top: 4px;
   transition: color 100ms ease;
 
   @mixin hover {
