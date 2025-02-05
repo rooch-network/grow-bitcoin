@@ -21,7 +21,6 @@ import {
   Title,
 } from '@mantine/core'
 import Link from 'next/link'
-import NavigationBar from '@/components/NavigationBar'
 import DoubleHeader from '@/components/navigation-bar'
 import Footer from '@/components/Footer'
 import { IconSearch, IconThumbUp, IconChevronDown } from '@tabler/icons-react'
@@ -291,7 +290,6 @@ export default function ClientProjectsPage({
 
   return (
     <>
-      {/* <NavigationBar /> */}
       <DoubleHeader />
 
       <Container size="lg" py="lg">
