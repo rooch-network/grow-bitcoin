@@ -72,7 +72,7 @@ export default function DoubleHeader({ style }: { style?: any }) {
           size="sm"
           hiddenFrom="sm"
         />
-        <ConnectButton />
+        <ConnectButton style={{ cursor: 'pointer' }} />
       </Group>
     </Container>
   )
