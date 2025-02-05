@@ -1,12 +1,12 @@
-import { useEffect, useState } from 'react'
+// Copyright (c) RoochNetwork
+// SPDX-License-Identifier: Apache-2.0
 import { Anchor, Box, Burger, Container, Group } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
-// import { MantineLogo } from '@mantinex/mantine-logo';
 import classes from './navigation-bar.module.css'
 import LogoSVG from '@/assets/logo.svg'
 import Link from 'next/link'
 import { ConnectButton } from '@roochnetwork/rooch-sdk-kit'
-import { usePathname, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useNavigationProvider } from './navigation-porvider'
 const userLinks = [
   { link: 'https://rooch.network/', label: 'Rooch' },
