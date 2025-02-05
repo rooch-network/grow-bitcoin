@@ -13,6 +13,7 @@ import '@roochnetwork/rooch-sdk-kit/dist/index.css'
 import '@radix-ui/themes/styles.css'
 import { Theme } from '@radix-ui/themes'
 import { ErrorGuard } from './errorGraud'
+import { NavigationProvider } from '@/components/navigation-porvider'
 type Props = {
   children: React.ReactNode
 }
@@ -63,7 +64,7 @@ export default function RootLayout({ children }: Props) {
           <Theme appearance="light">
             <RoochDappProvider>
               <ErrorGuard />
-              {children}
+              <NavigationProvider>{children}</NavigationProvider>
             </RoochDappProvider>
           </Theme>
         </MantineProvider>

@@ -18,7 +18,7 @@ import {
   useMantineTheme,
 } from '@mantine/core'
 import { useMediaQuery } from '@mantine/hooks'
-import NavigationBar from '@/components/NavigationBar'
+import DoubleHeader from '@/components/navigation-bar'
 import Footer from '@/components/Footer'
 
 import { IconQuestionMark, IconChevronCompactRight } from '@tabler/icons-react'
@@ -123,7 +123,7 @@ export default function Home({ faq }: { faq: FAQ[] }) {
   return (
     <>
       <Box component="header" py={{ base: '12rem', md: '16rem' }} style={{ position: 'relative' }}>
-        <NavigationBar style={{ position: 'absolute', zIndex: 9, top: 0, left: 0, right: 0 }} />
+        <DoubleHeader style={{ position: 'absolute', zIndex: 9, top: 0, left: 0, right: 0 }} />
 
         <IconWall />
         <Container size="lg" style={{ position: 'relative', zIndex: 2 }}>

@@ -20,7 +20,7 @@ import {
 } from '@mantine/core'
 import Link from 'next/link'
 
-import NavigationBar from '@/components/NavigationBar'
+import DoubleHeader from '@/components/navigation-bar'
 import Footer from '@/components/Footer'
 
 import {
@@ -207,7 +207,7 @@ export default function Portfolio() {
 
   return (
     <>
-      <NavigationBar />
+      <DoubleHeader />
 
       <Container size="lg" py="xl">
         <Box>

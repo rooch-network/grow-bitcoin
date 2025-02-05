@@ -4,7 +4,7 @@
 
 import Link from 'next/link'
 import { Box, Button, Card, Container, Flex, Grid, Text, Title } from '@mantine/core'
-import NavigationBar from '@/components/NavigationBar'
+import DoubleHeader from '@/components/navigation-bar'
 import Footer from '@/components/Footer'
 
 import Staking1SVG from '@/assets/staking-1.svg'
@@ -103,7 +103,7 @@ export default function GrowPage() {
   console.log(tokenInfo)
   return (
     <>
-      <NavigationBar />
+      <DoubleHeader />
       <Container pt="1rem" pb="4rem" size="lg">
         <Card radius="lg" p="lg" bg="gray.0" mb="2rem">
           <Flex justify="space-between">
