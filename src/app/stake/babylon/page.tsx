@@ -4,7 +4,7 @@
 
 import Link from 'next/link'
 import { Anchor, Breadcrumbs, Container, Flex, Group, Stack, Text, Title } from '@mantine/core'
-import NavigationBar from '@/components/NavigationBar'
+import DoubleHeader from '@/components/navigation-bar'
 import Footer from '@/components/Footer'
 
 import { IconHome } from '@tabler/icons-react'
@@ -27,7 +27,7 @@ export default function BabylonStakingPage() {
 
   return (
     <>
-      <NavigationBar />
+      <DoubleHeader />
 
       <Container size="lg" pt="1rem" pb="16rem">
         <Breadcrumbs mb="3rem" p="md" bg="gray.0" style={{ borderRadius: '0.75rem' }}>

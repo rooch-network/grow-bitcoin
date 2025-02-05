@@ -22,6 +22,7 @@ import {
 } from '@mantine/core'
 import Link from 'next/link'
 import NavigationBar from '@/components/NavigationBar'
+import DoubleHeader from '@/components/navigation-bar'
 import Footer from '@/components/Footer'
 import { IconSearch, IconThumbUp, IconChevronDown } from '@tabler/icons-react'
 import {
@@ -290,7 +291,8 @@ export default function ClientProjectsPage({
 
   return (
     <>
-      <NavigationBar />
+      {/* <NavigationBar /> */}
+      <DoubleHeader />
 
       <Container size="lg" py="lg">
         <Flex gap="lg" direction={{ base: 'column', sm: 'row' }}>

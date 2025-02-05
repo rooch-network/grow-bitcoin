@@ -21,7 +21,7 @@ import {
   Select,
 } from '@mantine/core'
 import Link from 'next/link'
-import NavigationBar from '@/components/NavigationBar'
+import DoubleHeader from '@/components/navigation-bar'
 import Footer from '@/components/Footer'
 
 import { IconChevronLeft, IconThumbUp, IconExternalLink, IconBrandX } from '@tabler/icons-react'
@@ -296,7 +296,7 @@ export default function ProjectDetail({ project }: { project: ProjectDetail }) {
 
   return (
     <>
-      <NavigationBar />
+      <DoubleHeader />
       <Container size="sm" py="xl">
         <Anchor component={Link} href="/projects" mb="md">
           <IconChevronLeft />

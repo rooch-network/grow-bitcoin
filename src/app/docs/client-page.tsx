@@ -4,7 +4,7 @@
 
 import { useState } from 'react'
 import { Container, Flex, Box, Title } from '@mantine/core'
-import NavigationBar from '@/components/NavigationBar'
+import DoubleHeader from '@/components/navigation-bar'
 import Footer from '@/components/Footer'
 
 import { IconChevronDown } from '@tabler/icons-react'
@@ -14,7 +14,7 @@ export default function Docs({ contentHTML, tocHTML }: { contentHTML: string; to
 
   return (
     <>
-      <NavigationBar />
+      <DoubleHeader />
 
       <Container size="lg" py="lg">
         <Flex gap="xl" direction={{ base: 'column', sm: 'row' }}>

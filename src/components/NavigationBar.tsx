@@ -75,6 +75,21 @@ function DesktopNavigationBar({ style }: { style?: any }) {
           >
             Submit Project
           </Anchor>
+          {/* <Menu key={link.label} trigger="hover" transitionProps={{ exitDuration: 0 }} withinPortal>
+            <Menu.Target>
+              <a
+                href={link.link}
+                className={classes.link}
+                onClick={(event) => event.preventDefault()}
+              >
+                <Center>
+                  <span className={classes.linkLabel}>{link.label}</span>
+                  <IconChevronDown size={14} stroke={1.5} />
+                </Center>
+              </a>
+            </Menu.Target>
+            <Menu.Dropdown>{menuItems}</Menu.Dropdown>
+          </Menu> */}
           {/*<Anchor*/}
           {/*  component={Link}*/}
           {/*  href="/register"*/}
