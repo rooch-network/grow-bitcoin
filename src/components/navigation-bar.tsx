@@ -58,7 +58,7 @@ export default function DoubleHeader({ style }: { style?: any }) {
       <Link href="/">
         <LogoSVG height={56} />
       </Link>
-      <Group>
+      <Group align="end">
         <Box className={classes.links} visibleFrom="sm">
           <Group justify="flex-end">{secondaryItems}</Group>
           <Group gap={0} justify="flex-end" className={classes.mainLinks}>
@@ -72,7 +72,9 @@ export default function DoubleHeader({ style }: { style?: any }) {
           size="sm"
           hiddenFrom="sm"
         />
-        <ConnectButton style={{ cursor: 'pointer' }} />
+        <Box style={{ marginBottom: 13 }}>
+          <ConnectButton style={{ cursor: 'pointer' }} />
+        </Box>
       </Group>
     </Container>
   )
