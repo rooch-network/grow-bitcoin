@@ -12,7 +12,7 @@ const ActivitiesData = [
     name: 'Pan_Ecosystem',
     title: 'Pan Network Special Campaign ends in',
     description:
-      'PAN Network Special Campaign Ends in 6pm, Feb 24th (UTC+8) Empowering BTC payment infrastructure by voting for PAN and getting xPAN points. ',
+      'Empowering BTC payment infrastructure by voting for PAN and getting xPAN points. ',
     endTime: 1740391200000,
     icon: './pan_logo.svg',
   },
@@ -58,7 +58,7 @@ const Item = ({ name, title, description, endTime, icon }: ItemProps) => {
           flexDirection: 'row',
         }}
       >
-        <div style={{ width: '70%' }}>
+        <div style={{ width: '67%' }}>
           <p
             style={{
               color: '#22AB38',
