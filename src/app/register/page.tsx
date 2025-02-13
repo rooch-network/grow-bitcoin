@@ -124,7 +124,7 @@ export default function Register() {
       })
       .filter((item_1) => {
         return (
-          item_1.project_id === registration!.projectId &&
+          item_1.project_id.toLowerCase() === registration!.projectId.toLowerCase() &&
           item_1.vote > 0 &&
           item_1.timestamp > registration!.startTime &&
           item_1.timestamp < registration!.endTime
@@ -239,7 +239,7 @@ export default function Register() {
                 placeholder={
                   registerRecipient
                     ? registerRecipient
-                    : 'Please enter the secret code to receive the Yescoin airdrop'
+                    : 'Please enter the Yescoin Invite Link to receive the Yescoin airdrop'
                 }
                 radius="md"
                 value={recipient}
