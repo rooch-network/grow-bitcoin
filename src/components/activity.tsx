@@ -9,20 +9,23 @@ import { useCountDown } from 'ahooks'
 
 const ActivitiesData = [
   {
+    name: 'Yescoin',
+    title: 'Yescoin Register ends in',
+    description:
+      'Bringing BTC power to broader SocialFi ecosystem by voting for Yescoin and get Yescoin XP.',
+    endTime: 1739952000000,
+    icon: './yescoin_logo.svg',
+    toReg: true,
+  },
+  {
     name: 'Pan_Ecosystem',
-    title: 'Pan Network Special Campaign ends in',
+    title: 'Pan Network Campaign ends in',
     description:
       'Empowering BTC payment infrastructure by voting for PAN and getting xPAN points. ',
     endTime: 1740391200000,
     icon: './pan_logo.svg',
-  },
-  {
-    name: 'Yescoin',
-    title: 'Yescoin Special Campaign ends in',
-    description:
-      'Bringing BTC power to broader SocialFi ecosystem by voting for Yescoin and get Yescoin XP.',
-    endTime: 1739347200000,
-    icon: './yescoin_logo.svg',
+    titleColor: '#000',
+    toReg: false,
   },
   {
     name: 'WORLD3',
@@ -31,6 +34,7 @@ const ActivitiesData = [
       'Bring the power of BTC to virtual worlds and the AI ecosystem by voting for WORLD3 and earning Lumens.',
     endTime: 1740038400000,
     icon: './group_logo.svg',
+    toReg: false,
   },
 ]
 
@@ -40,9 +44,10 @@ interface ItemProps {
   description: string
   endTime: number
   icon: string
+  toReg: boolean
 }
 
-const Item = ({ name, title, description, endTime, icon }: ItemProps) => {
+const Item = ({ name, title, description, endTime, icon, toReg }: ItemProps) => {
   const [_countdown, formattedRes] = useCountDown({
     targetDate: endTime,
   })
@@ -50,20 +55,21 @@ const Item = ({ name, title, description, endTime, icon }: ItemProps) => {
   const { days, hours, minutes, seconds } = formattedRes
 
   return (
-    <Link href={`/project/${name}`} style={{ textDecoration: 'none' }}>
+    <Link href={toReg ? '/register' : `/project/${name}`} style={{ textDecoration: 'none' }}>
       <div
         style={{
-          padding: '16px',
+          paddingLeft: '30px',
+          paddingRight: '30px',
           display: 'flex',
           flexDirection: 'row',
         }}
       >
-        <div style={{ width: '67%' }}>
+        <div style={{ width: '65%' }}>
           <p
             style={{
               color: '#22AB38',
-              fontSize: '2rem',
-              fontWeight: 600,
+              fontSize: '1.5rem',
+              fontWeight: 500,
             }}
           >
             {title}
@@ -72,22 +78,26 @@ const Item = ({ name, title, description, endTime, icon }: ItemProps) => {
             style={{
               color: '#99CD87',
               fontSize: '1rem',
-              marginTop: '4px',
               fontWeight: 600,
               width: '100%',
-              wordWrap: 'break-word', // 使用 wordWrap 处理长文本换行
+              wordWrap: 'break-word',
             }}
           >
             {description}
           </p>
         </div>
-        <div style={{ width: '30%' }}>
-          <p style={{ color: '#fff', fontSize: '2.05rem', fontWeight: 600 }}>
-            {days}d {hours}h {minutes}m {seconds} s
+        <div
+          style={{
+            width: '35%',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <p style={{ color: '#fff', fontSize: '1.5rem', fontWeight: 600, marginRight: '4px' }}>
+            {days}D {hours}H {minutes}M {seconds}S
           </p>
-        </div>
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <img src={icon} alt="logo" width={80} height={80} />
+          <img src={icon} alt="logo" width={56} height={56} />
         </div>
       </div>
     </Link>
@@ -95,7 +105,8 @@ const Item = ({ name, title, description, endTime, icon }: ItemProps) => {
 }
 
 export const Activities = () => {
-  const slides = ActivitiesData.map((item) => (
+  const now = Date.now()
+  const slides = ActivitiesData.filter((item) => item.endTime > now).map((item) => (
     <Carousel.Slide key={item.name}>
       <Item
         name={item.name}
@@ -103,6 +114,7 @@ export const Activities = () => {
         description={item.description}
         endTime={item.endTime}
         icon={item.icon}
+        toReg={item.toReg}
       />
     </Carousel.Slide>
   ))
@@ -110,16 +122,27 @@ export const Activities = () => {
     <div
       style={{
         borderRadius: '12px',
-        backgroundImage: 'url(./banner.svg)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
         marginBottom: '16px',
         textAlign: 'left',
         overflow: 'hidden',
         position: 'relative',
       }}
     >
+      <img
+        src="./banner.svg"
+        alt="Background"
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+          zIndex: -1,
+        }}
+      />
+
+      {/* Carousel 组件 */}
       <Carousel
         withIndicators
         loop

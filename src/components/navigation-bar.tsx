@@ -1,5 +1,6 @@
 // Copyright (c) RoochNetwork
 // SPDX-License-Identifier: Apache-2.0
+
 import { Anchor, Box, Burger, Container, Group } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import classes from './navigation-bar.module.css'
@@ -24,6 +25,10 @@ const mainLinks = [
   { link: '/projects', label: 'Projects' },
   { link: '/docs', label: 'Docs' },
   { link: '/portfolio', label: 'My Portfolio' },
+  {
+    link: '/register',
+    label: 'Grow Registration',
+  },
 ]
 
 export default function DoubleHeader({ style }: { style?: any }) {
@@ -48,7 +53,12 @@ export default function DoubleHeader({ style }: { style?: any }) {
   ))
 
   const secondaryItems = userLinks.map((item) => (
-    <Anchor href={item.link} key={item.label} target="_blank" className={classes.secondaryLink}>
+    <Anchor
+      href={item.link}
+      key={item.label}
+      target={item.link.startsWith('http') ? '_blank' : '_self'}
+      className={classes.secondaryLink}
+    >
       {item.label}
     </Anchor>
   ))
