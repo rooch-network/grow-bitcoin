@@ -129,11 +129,8 @@ export default function Portfolio() {
               })
               setVoteCount(count)
               setVotedProjects(items)
-              console.log(result)
             })
-          console.log(view.value['id'])
         }
-        console.log(result)
       })
 
     // client.queryObjectStates({
