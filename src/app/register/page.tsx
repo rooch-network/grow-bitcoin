@@ -4,7 +4,7 @@
 
 import { Box, Button, Card, Container, Flex, Input, Text, Title } from '@mantine/core'
 
-import NavigationBar from '@/components/NavigationBar'
+import DoubleHeader from '@/components/navigation-bar'
 import {
   SessionKeyGuard,
   useCurrentAddress,
@@ -18,8 +18,8 @@ import { Args, Transaction } from '@roochnetwork/rooch-sdk'
 import toast from 'react-hot-toast'
 
 // tmp info
-const EDN_TIME = 1736337600
-const UXLINK_ID = '0x2a689e096ed5aae569a3bdb42e16c828ef367360425d1d85a6dead2b63b177a4'
+const EDN_TIME = 1739952000
+const ID = '0x495e692bebb2a8ddfeda8a219f480d1af99ae7472964df0c0f72fcaace874029'
 
 type RegistrationType = {
   projectId: string
@@ -64,7 +64,7 @@ export default function Register() {
     }
     const result = await client.queryObjectStates({
       filter: {
-        object_id: UXLINK_ID,
+        object_id: ID,
       },
     })
 
@@ -76,7 +76,7 @@ export default function Register() {
 
     const registerResult = await client.executeViewFunction({
       target: `${contractAddr}::grow_registration::get_user_info`,
-      args: [Args.objectId(UXLINK_ID), Args.address(curAddress!.genRoochAddress().toHexAddress())],
+      args: [Args.objectId(ID), Args.address(curAddress!.genRoochAddress().toHexAddress())],
     })
 
     if (registerResult.vm_status === 'Executed') {
@@ -139,7 +139,7 @@ export default function Register() {
     if (registerRecipient !== '') {
       tx.callFunction({
         target: `${contractAddr}::grow_registration::update_register_info`,
-        args: [Args.objectId(UXLINK_ID), Args.string(recipient)],
+        args: [Args.objectId(ID), Args.string(recipient)],
       })
     } else {
       const points = await queryPointBox()
@@ -150,7 +150,7 @@ export default function Register() {
       tx.callFunction({
         target: `${contractAddr}::grow_registration::register_batch`,
         args: [
-          Args.objectId(UXLINK_ID),
+          Args.objectId(ID),
           Args.vec(
             'objectId',
             points.map((point) => point.id),
@@ -178,25 +178,25 @@ export default function Register() {
 
   return (
     <>
-      <NavigationBar />
+      <DoubleHeader />
       <Container pt="1rem" pb="4rem" size="lg">
         <Card radius="lg" p="lg" bg="gray.0" mb="2rem">
           <Flex justify="space-between">
             <Box>
               <Title order={4} fw="500">
-                UXLink Snapshoot Info
+                Yescoin Snapshoot Info
               </Title>
               <Text mt="4" c="gray.7" style={{ display: 'flex' }}>
                 <span style={{ minWidth: '150px' }}>TX Order :</span>
-                <span>72730361</span>
+                <span>88027863</span>
               </Text>
               <Text mt="4" c="gray.7" style={{ display: 'flex' }}>
                 <span style={{ minWidth: '150px' }}>TX Hash :</span>
-                <span>0x54adf5ddc03b1083f9146645e1d7ecaa5b272a66c449a96ec82f38073713c382</span>
+                <span>0x0a2000a7a129ed5283c08f25fab7c59747dd172da02d0e35a0170132bba6d585</span>
               </Text>
               <Text mt="4" c="gray.7" style={{ display: 'flex' }}>
                 <span style={{ minWidth: '150px' }}>State Root :</span>
-                <span>0x42d23fdaaf5ec6cd62c7f6f2ba527e397ea3d45d8c1f9d5956054aa8b8122271</span>
+                <span>0xf017d29121be837a9d4d3e57df1681b12d42c34e7c5972a63d875f81ae913b40</span>
               </Text>
               <Text mt="4" c="gray.7" style={{ display: 'flex' }}>
                 <span style={{ minWidth: '150px' }}>Time Remaining :</span>
@@ -215,7 +215,7 @@ export default function Register() {
               {curAddress && index > 0 && 'Congratulations! You are eligible for the airdrop.'}
             </Title>
           </Box>
-          <Flex direction={'row'}>
+          {/* <Flex direction={'row'}>
             <Text color="red">Note: Your receiving address needs to interact with </Text>
             <a
               href="https://dapp.uxlink.io/season2"
@@ -231,7 +231,7 @@ export default function Register() {
             >
               UXLink
             </a>
-          </Flex>
+          </Flex> */}
           {index > 0 && (
             <Flex mt="10" gap="md" direction={{ base: 'column', xs: 'row' }}>
               <Input
@@ -239,7 +239,7 @@ export default function Register() {
                 placeholder={
                   registerRecipient
                     ? registerRecipient
-                    : 'Please enter the address to receive the UXLink airdrop (EVM or TON)'
+                    : 'Please enter the secret code to receive the Yescoin airdrop'
                 }
                 radius="md"
                 value={recipient}
