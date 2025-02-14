@@ -18,7 +18,7 @@ import { Args, Transaction } from '@roochnetwork/rooch-sdk'
 import toast from 'react-hot-toast'
 
 // tmp info
-const EDN_TIME = 1739952000
+const EDN_TIME = 1740124800
 const ID = '0x495e692bebb2a8ddfeda8a219f480d1af99ae7472964df0c0f72fcaace874029'
 
 type RegistrationType = {
