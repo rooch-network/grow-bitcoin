@@ -13,7 +13,7 @@ const ActivitiesData = [
     title: 'Yescoin Register ends in',
     description:
       'Bringing BTC power to broader SocialFi ecosystem by voting for Yescoin and get Yescoin XP.',
-    endTime: 1739952000000,
+    endTime: 1740124800000,
     icon: './yescoin_logo.svg',
     toReg: true,
   },
