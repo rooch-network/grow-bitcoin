@@ -29,12 +29,12 @@ const ActivitiesData = [
   },
   {
     name: 'WORLD3',
-    title: 'WORLD3 Special Campaign ends in',
+    title: 'WORLD3 Register ends in',
     description:
       'Bring the power of BTC to virtual worlds and the AI ecosystem by voting for WORLD3 and earning Lumens.',
-    endTime: 1740038400000,
+    endTime: 1740816000000,
     icon: './group_logo.svg',
-    toReg: false,
+    toReg: true,
   },
 ]
 
