@@ -18,8 +18,8 @@ import { Args, Transaction } from '@roochnetwork/rooch-sdk'
 import toast from 'react-hot-toast'
 
 // tmp info
-const EDN_TIME = 1740124800
-const ID = '0x495e692bebb2a8ddfeda8a219f480d1af99ae7472964df0c0f72fcaace874029'
+const EDN_TIME = 1740816000
+const ID = '0x889e19d9d899bd8f719a4ed5b592ab6cdbf95f97f84f992c8148e0c14ab47716'
 
 type RegistrationType = {
   projectId: string
@@ -188,15 +188,15 @@ export default function Register() {
               </Title>
               <Text mt="4" c="gray.7" style={{ display: 'flex' }}>
                 <span style={{ minWidth: '150px' }}>TX Order :</span>
-                <span>88027863</span>
+                <span>91207426</span>
               </Text>
               <Text mt="4" c="gray.7" style={{ display: 'flex' }}>
                 <span style={{ minWidth: '150px' }}>TX Hash :</span>
-                <span>0x0a2000a7a129ed5283c08f25fab7c59747dd172da02d0e35a0170132bba6d585</span>
+                <span>0xae0b6997266f83bf2be639f4caece77d7b080d09dbd6a1d4914a6f8101c128e2</span>
               </Text>
               <Text mt="4" c="gray.7" style={{ display: 'flex' }}>
                 <span style={{ minWidth: '150px' }}>State Root :</span>
-                <span>0xf017d29121be837a9d4d3e57df1681b12d42c34e7c5972a63d875f81ae913b40</span>
+                <span>0x9cbebdf284f0bef88580c177392bca54fb143e384cd869ea098808751009392a</span>
               </Text>
               <Text mt="4" c="gray.7" style={{ display: 'flex' }}>
                 <span style={{ minWidth: '150px' }}>Time Remaining :</span>

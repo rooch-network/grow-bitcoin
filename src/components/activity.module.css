@@ -1,28 +1,28 @@
 .price {
-    color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
+  color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
 }
 
 .carousel {
-    @mixin hover {
-        .carouselControls {
-            opacity: 1;
-        }
+  @mixin hover {
+    .carouselControls {
+      opacity: 1;
     }
+  }
 }
 
 .carouselControls {
-    transition: opacity 150ms ease;
-    opacity: 0;
-    color: #ffab37;
+  transition: opacity 150ms ease;
+  opacity: 0;
+  color: #ffab37;
 }
 
 .carouselIndicator {
-    width: 4px;
-    height: 4px;
-    background-color: #ffab37;
-    z-index: 10 !important;
-    transition: width 250ms ease;
-    &[data-active] {
-        width: 16px;
-    }
+  width: 4px;
+  height: 4px;
+  background-color: #ffab37;
+  z-index: 10 !important;
+  transition: width 250ms ease;
+  &[data-active] {
+    width: 16px;
+  }
 }
