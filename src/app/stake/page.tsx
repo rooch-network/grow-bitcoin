@@ -100,7 +100,6 @@ export default function GrowPage() {
     return `${days} : ${hours} : ${minutes} : ${secs}`
   }
 
-  console.log(tokenInfo)
   return (
     <>
       <DoubleHeader />
