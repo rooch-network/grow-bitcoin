@@ -184,7 +184,7 @@ export default function Register() {
           <Flex justify="space-between">
             <Box>
               <Title order={4} fw="500">
-                Yescoin Snapshoot Info
+                World3 Snapshoot Info
               </Title>
               <Text mt="4" c="gray.7" style={{ display: 'flex' }}>
                 <span style={{ minWidth: '150px' }}>TX Order :</span>
@@ -239,7 +239,7 @@ export default function Register() {
                 placeholder={
                   registerRecipient
                     ? registerRecipient
-                    : 'Please enter the Yescoin Invite Link to receive the Yescoin airdrop'
+                    : 'Please enter the email address associated with World3 to receive Lumens from World3.'
                 }
                 radius="md"
                 value={recipient}
