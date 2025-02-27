@@ -144,6 +144,7 @@ export default function Register() {
     } else {
       const points = await queryPointBox()
       if (points.length === 0) {
+        toast.error('not found valid votes')
         return
       }
 
