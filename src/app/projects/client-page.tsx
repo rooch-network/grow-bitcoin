@@ -47,10 +47,6 @@ function ProjectCard({
   contractProject?: ContractProjectType
   adminId: string
 }) {
-  if (project.slug === 'apro-oracle') {
-    console.log(project)
-    console.log(contractProject)
-  }
   const client = useRoochClient()
   const contractAddr = useNetworkVariable('contractAddr')
   const contractVersion = useNetworkVariable('contractVersion')
