@@ -98,8 +98,6 @@ export default function ProjectDetail({ project }: { project: ProjectDetail }) {
     args: [projectListObj, Args.string(project.slug)],
   })
 
-  console.log(data)
-
   useEffect(() => {
     if (!addr) {
       return

@@ -7,7 +7,7 @@ import classes from './activity.module.css'
 import Link from 'next/link'
 import { useCountDown } from 'ahooks'
 
-const ActivitiesData = [
+export const ActivitiesData = [
   {
     name: 'Yescoin',
     title: 'Yescoin Register ends in',
@@ -22,10 +22,10 @@ const ActivitiesData = [
     title: 'Pan Network Campaign ends in',
     description:
       'Empowering BTC payment infrastructure by voting for PAN and getting xPAN points. ',
-    endTime: 1740391200000,
+    endTime: 1741248000000,
     icon: './pan_logo.svg',
     titleColor: '#000',
-    toReg: false,
+    toReg: true,
   },
   {
     name: 'WORLD3',
