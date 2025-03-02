@@ -21,7 +21,7 @@ import { useCountDown } from 'ahooks'
 const RegProjects = [
   {
     name: 'Pan',
-    hint: 'Please enter the email address associated with World3 to receive Lumens from World3.',
+    hint: 'Please enter the btc address',
     endTime: 1741248000,
     id: '0x51bcb73e7fec05c21c15e629cff00b2410f5c618bc37e92a865304e0bf68a117',
     order: '93446301',
