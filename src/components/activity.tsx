@@ -19,7 +19,7 @@ export const ActivitiesData = [
   },
   {
     name: 'Pan_Ecosystem',
-    title: 'Pan Network Campaign ends in',
+    title: 'Pan Network Register ends in',
     description:
       'Empowering BTC payment infrastructure by voting for PAN and getting xPAN points. ',
     endTime: 1741248000000,
