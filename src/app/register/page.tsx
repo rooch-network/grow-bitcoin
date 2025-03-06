@@ -11,35 +11,13 @@ import {
   useRoochClient,
   useSignAndExecuteTransaction,
 } from '@roochnetwork/rooch-sdk-kit'
-import { snapshoot, world3Snapshoot } from '@/app/constant'
 import React, { useCallback, useEffect, useState } from 'react'
 import { useNetworkVariable } from '@/app/networks'
 import { Args, Transaction } from '@roochnetwork/rooch-sdk'
 import toast from 'react-hot-toast'
 import { useCountDown } from 'ahooks'
 
-const RegProjects = [
-  {
-    name: 'Pan',
-    hint: 'Please enter the btc address',
-    endTime: 1741248000,
-    id: '0x51bcb73e7fec05c21c15e629cff00b2410f5c618bc37e92a865304e0bf68a117',
-    order: '93446301',
-    root: '0xcffb31c083f7af34d637aae05850b49d7ad90596569f4f1724a4baa3cdce0ce6',
-    hash: '0x241eea2718505e285d2fb3c7bee1c5314a4272bd2f870c4844b469631ebb9073',
-    snapshoot: world3Snapshoot,
-  },
-  {
-    name: 'WORLD3',
-    hint: 'Please enter the email address associated with World3 to receive Lumens from World3.',
-    endTime: 1740816000,
-    id: '0x889e19d9d899bd8f719a4ed5b592ab6cdbf95f97f84f992c8148e0c14ab47716',
-    order: '91207426',
-    root: '0x9cbebdf284f0bef88580c177392bca54fb143e384cd869ea098808751009392a',
-    hash: '0xae0b6997266f83bf2be639f4caece77d7b080d09dbd6a1d4914a6f8101c128e2',
-    snapshoot: snapshoot,
-  },
-]
+const RegProjects = []
 
 type RegistrationType = {
   projectId: string
