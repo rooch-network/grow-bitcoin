@@ -25,10 +25,10 @@ const mainLinks = [
   { link: '/projects', label: 'Projects' },
   { link: '/docs', label: 'Docs' },
   { link: '/portfolio', label: 'My Portfolio' },
-  {
-    link: '/register',
-    label: 'Grow Registration',
-  },
+  // {
+  //   link: '/register',
+  //   label: 'Grow Registration',
+  // },
 ]
 
 export default function DoubleHeader({ style }: { style?: any }) {
