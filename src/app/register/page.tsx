@@ -17,7 +17,7 @@ import { Args, Transaction } from '@roochnetwork/rooch-sdk'
 import toast from 'react-hot-toast'
 import { useCountDown } from 'ahooks'
 
-const RegProjects = []
+const RegProjects: ItemProps[] = []
 
 type RegistrationType = {
   projectId: string
