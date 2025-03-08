@@ -3,7 +3,11 @@
 'use client'
 
 export function isMainNetwork() {
-  return true
+  if (typeof window !== 'undefined' && window.location.hostname === 'test-grow.rooch.network') {
+    return false
+  }else{
+    return true
+  }
   if (typeof window !== 'undefined') {
     return (
       window.location.hostname === 'grow.rooch.network' ||
