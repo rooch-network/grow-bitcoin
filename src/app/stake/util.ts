@@ -12,6 +12,7 @@ export type TokenInfo = {
     timeRemaining: number
     assetTotalValue: number
     assetTotalWeight: number
+    releasePerSecond: number
   }
   coinInfo: {
     type: string
@@ -41,6 +42,8 @@ export async function getTokenInfo(client: RoochClient, address: string): Promis
     },
   })
 
+  console.log(result)
+
   const data = result[0]
   const decode = (((data.decoded_value as any).value as any).value as any).value as any
   const startTime = decode['start_time'] as number
@@ -66,6 +69,7 @@ export async function getTokenInfo(client: RoochClient, address: string): Promis
       startTime,
       endTime,
       timeRemaining: now > endTime ? 0 : Number((endTime - now).toFixed()),
+      releasePerSecond: decode['release_per_second'] as number,
     },
     coinInfo: {
       type: coinType,

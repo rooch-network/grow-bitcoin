@@ -42,7 +42,8 @@
     "@radix-ui/colors": "^3.0.0",
     "@radix-ui/react-icons": "^1.3.0",
     "@radix-ui/themes": "^2.0.0",
-    "github-markdown-css": "^5.8.1"
+    "github-markdown-css": "^5.8.1",
+    "bignumber.js": "^9.1.2"
   },
   "devDependencies": {
     "@svgr/webpack": "^8.1.0",

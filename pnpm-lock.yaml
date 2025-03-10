@@ -47,6 +47,9 @@ importers:
       airtable:
         specifier: ^0.12.2
         version: 0.12.2
+      bignumber.js:
+        specifier: ^9.1.2
+        version: 9.1.2
       github-markdown-css:
         specifier: ^5.8.1
         version: 5.8.1
@@ -2257,6 +2260,9 @@ packages:
 
   bech32@2.0.0:
     resolution: {integrity: sha512-LcknSilhIGatDAsY1ak2I8VtGaHNhgMSYVxFrGLXv+xLHytaKZKcaUJJUE7qmBr7h33o5YQwP55pMI0xmkpJwg==}
+
+  bignumber.js@9.1.2:
+    resolution: {integrity: sha512-2/mKyZH9K85bzOEfhXDBFZTGd1CTs+5IHpeFQo9luiBG7hghdC851Pj2WAhb6E3R6b9tZj/XKhbg4fum+Kepug==}
 
   boolbase@1.0.0:
     resolution: {integrity: sha512-JZOSA7Mo9sNGB8+UjSgzdLtokWAky1zbztM3WRLCbZ70/3cTANmQmOdR7y2g+J0e2WXywy1yS468tY+IruqEww==}
@@ -6755,6 +6761,8 @@ snapshots:
   base64-js@1.5.1: {}
 
   bech32@2.0.0: {}
+
+  bignumber.js@9.1.2: {}
 
   boolbase@1.0.0: {}
 
