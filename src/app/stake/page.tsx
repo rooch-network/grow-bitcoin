@@ -11,10 +11,13 @@ import Staking1SVG from '@/assets/staking-1.svg'
 import Staking2SVG from '@/assets/staking-2.svg'
 import Staking3SVG from '@/assets/staking-3.svg'
 import { getTokenInfo, TokenInfo } from './util'
-import { useCurrentAddress, useRoochClient } from '@roochnetwork/rooch-sdk-kit'
-import { useEffect, useState } from 'react'
+import { useCurrentAddress, useRoochClient, useRoochClientQuery } from '@roochnetwork/rooch-sdk-kit'
+import { useEffect, useMemo, useState } from 'react'
 import { useNetworkVariable } from '../networks'
 import { formatNumber } from '@/utils/number'
+import { Args } from '@roochnetwork/rooch-sdk'
+import { AnnotatedMoveStructView } from '@roochnetwork/rooch-sdk/src/client/types/generated'
+import { BigNumber } from 'bignumber.js'
 
 const stakingList = [
   {
@@ -100,6 +103,49 @@ export default function GrowPage() {
     return `${days} : ${hours} : ${minutes} : ${secs}`
   }
 
+  const { data: btcPrice } = useRoochClientQuery('executeViewFunction', {
+    target: `${contractAddr}::trusted_oracle::trusted_price`,
+    args: [Args.string('BTCUSD')],
+  })
+  console.log(btcPrice)
+
+  const { data: grow2Rgas } = useRoochClientQuery('executeViewFunction', {
+    target: `${contractAddr}::router::get_amount_out`,
+    args: [Args.u64(BigInt(1))],
+    typeArgs: [`${contractAddr}::grow_bitcoin::GROW`, '0x3::gas_coin::RGas'],
+  })
+  console.log(grow2Rgas)
+  // 6 dec
+  const { data: rgas2USD } = useRoochClientQuery('executeViewFunction', {
+    target: `${contractAddr}::router::get_amount_out`,
+    args: [Args.u64(BigInt(10000000))],
+    typeArgs: ['0x3::gas_coin::RGas', `${contractAddr}::usdt_f::USDT`],
+  })
+
+  const s = useMemo(() => {
+    if (!grow2Rgas || !rgas2USD || !tokenInfo) {
+      return '0'
+    }
+    const btcPriceValue = (btcPrice!.return_values![0].decoded_value as AnnotatedMoveStructView)
+      .value['value'] as number
+    // 1 btc grow / 1 year
+    const grow2RGasCount = grow2Rgas!.return_values![0].decoded_value as number
+    const rgas2USDCount = rgas2USD!.return_values![0].decoded_value as number
+
+    // 1 BTC GROW / 1 year
+    const growCount = new BigNumber(tokenInfo.data.releasePerSecond)
+      .div(tokenInfo.data.assetTotalWeight)
+      .times(BigNumber(10).pow(9))
+      .times(31536000)
+
+    const xPrice = new BigNumber(btcPriceValue).div(new BigNumber(10).pow(8))
+
+    const yPrice = growCount
+      .times(BigNumber(grow2RGasCount).div(new BigNumber(10).pow(8)))
+      .times(BigNumber(rgas2USDCount).div(new BigNumber(10).pow(6)))
+    return yPrice.div(xPrice).times(100).toFixed(3)
+  }, [btcPrice, grow2Rgas, rgas2USD, tokenInfo])
+
   return (
     <>
       <DoubleHeader />
@@ -117,6 +163,11 @@ export default function GrowPage() {
               <Text mt="4" c="gray.7" style={{ display: 'flex' }}>
                 <span style={{ minWidth: '150px' }}>Total stake :</span>
                 <span>{tokenInfo ? formatNumber(tokenInfo?.data.assetTotalWeight) : '-'} stas</span>
+              </Text>
+              <Text mt="4" c="gray.7" style={{ display: 'flex' }}>
+                <span style={{ minWidth: '150px' }}>APY :</span>
+                <span>{s}%</span>
+                <span style={{ marginLeft: '10px', color: 'red' }}>&#9432;</span>
               </Text>
             </Box>
 
