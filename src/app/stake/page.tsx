@@ -165,7 +165,7 @@ export default function GrowPage() {
                 <span>{tokenInfo ? formatNumber(tokenInfo?.data.assetTotalWeight) : '-'} stas</span>
               </Text>
               <Text mt="4" c="gray.7" style={{ display: 'flex' }}>
-                <span style={{ minWidth: '150px' }}>APY :</span>
+                <span style={{ minWidth: '150px' }}>APR :</span>
                 <span>{s}%</span>
                 <span style={{ marginLeft: '10px', color: 'red' }}>&#9432;</span>
               </Text>
