@@ -126,8 +126,7 @@ export default function GrowPage() {
     if (!grow2Rgas || !rgas2USD || !tokenInfo) {
       return '0'
     }
-    const btcPriceValue = (btcPrice!.return_values![0].decoded_value as AnnotatedMoveStructView)
-      .value['value'] as number
+    const btcPriceValue = btcPrice!.return_values![0].decoded_value as number
     // 1 btc grow / 1 year
     const grow2RGasCount = grow2Rgas!.return_values![0].decoded_value as number
     const rgas2USDCount = rgas2USD!.return_values![0].decoded_value as number
@@ -137,12 +136,15 @@ export default function GrowPage() {
       .div(tokenInfo.data.assetTotalWeight)
       .times(BigNumber(10).pow(9))
       .times(31536000)
+    console.log(growCount.toString())
 
-    const xPrice = new BigNumber(btcPriceValue).div(new BigNumber(10).pow(8))
+    const xPrice = new BigNumber(btcPriceValue)
+    console.log(xPrice.toString())
 
     const yPrice = growCount
       .times(BigNumber(grow2RGasCount).div(new BigNumber(10).pow(8)))
       .times(BigNumber(rgas2USDCount).div(new BigNumber(10).pow(6)))
+    console.log(yPrice.toString())
     return yPrice.div(xPrice).times(100).toFixed(3)
   }, [btcPrice, grow2Rgas, rgas2USD, tokenInfo])
 
