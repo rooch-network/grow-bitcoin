@@ -16,7 +16,6 @@ import { useEffect, useMemo, useState } from 'react'
 import { useNetworkVariable } from '../networks'
 import { formatNumber } from '@/utils/number'
 import { Args } from '@roochnetwork/rooch-sdk'
-import { AnnotatedMoveStructView } from '@roochnetwork/rooch-sdk/src/client/types/generated'
 import { BigNumber } from 'bignumber.js'
 
 const stakingList = [
