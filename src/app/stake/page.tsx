@@ -158,17 +158,8 @@ export default function GrowPage() {
                 $GROW Info
               </Title>
               <Text mt="4" c="gray.7" style={{ display: 'flex' }}>
-                <span style={{ minWidth: '150px' }}>Time Remaining :</span>
-                <span>{tokenInfo ? formatTimeRemaining(timeRemaining) : '-'}</span>
-              </Text>
-              <Text mt="4" c="gray.7" style={{ display: 'flex' }}>
                 <span style={{ minWidth: '150px' }}>Total stake :</span>
                 <span>{tokenInfo ? formatNumber(tokenInfo?.data.assetTotalWeight) : '-'} stas</span>
-              </Text>
-              <Text mt="4" c="gray.7" style={{ display: 'flex' }}>
-                <span style={{ minWidth: '150px' }}>APR :</span>
-                <span>{s}%</span>
-                <span style={{ marginLeft: '10px', color: 'red' }}>&#9432;</span>
               </Text>
             </Box>
 
